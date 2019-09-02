@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, redirect
 import datetime
 import pytz # timezone 
+import random
 import requests
 import os
 
@@ -34,7 +35,30 @@ def add_numbers_post():
   	      except ValueError:
   	      	return "Easy now! Let's keep it simple! 2 numbers with a space between them please"
 
-
+@app.route('/guess_number', methods=['GET','POST'])
+def guess_number_post():
+	if request.method == 'GET':
+	  	return render_template('guess_number.html')
+	elif request.method == 'POST':
+  	     secretNumber = random.randint(1, 30)
+             print('I am thinking of a number between 1 and 30.')
+	     print(request.form['text'])
+# Ask the player to guess 6 times.
+         for guessesTaken in range(1, 7):
+	    print('Take a guess.')
+	    guess = int(input())
+	    if guess < secretNumber:
+	        print('Your guess is too low.')
+    	    elif guess > secretNumber:
+		print('Your guess is too high.')
+            else:
+                break    # This condition is the correct guess!
+            if guess == secretNumber:
+                 print('Good job! You guessed my number in ' + str(guessesTaken) + ' guesses!')
+            else:
+                 print('Nope. The number I was thinking of was ' + str(secretNumber))
+	 
+  	      
 @app.route('/shopping_list', methods=['GET','POST'])
 def shopping_list_post():
 	  # --> ['5', '6', '8']
